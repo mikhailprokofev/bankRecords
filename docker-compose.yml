@@ -1,0 +1,52 @@
+version: '2.1'
+
+services:
+  app-php:
+    user: 1000:1000
+    container_name: app-php
+    build: ./docker/php
+    env_file:
+      - ${PWD:-./}/.env
+    volumes:
+      - ${PWD:-./}:/var/www
+      - ${PWD:-./}/.env:/var/www/.env
+      - ${PWD:-./}/var/composer:/var/www/var/composer
+    environment:
+      COMPOSER_HOME: /var/www/var/composer
+    depends_on:
+      app-postgres:
+        condition: service_healthy
+
+  app-postgres:
+    container_name: app-postgres
+    image: postgres:11.2-alpine
+    volumes:
+      - app-postgres-data:/var/lib/postgresql/data
+      - ${PWD:-./}/pgdumps:/var/www
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: pg_isready -U root -d ${POSTGRES_DB} -p 5432
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app-nginx:
+    container_name: app-nginx
+    image: nginx:latest
+    volumes:
+      - ${PWD:-./}/backend:/var/www
+      - ./docker/nginx/config:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx
+    ports:
+      - '80:80'
+      - '4434:443'
+    depends_on:
+      - app-php
+
+volumes:
+  app-postgres-data:
