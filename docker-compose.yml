@@ -22,7 +22,6 @@ services:
     image: postgres:11.2-alpine
     volumes:
       - app-postgres-data:/var/lib/postgresql/data
-      - ${PWD:-./}/pgdumps:/var/www
     ports:
       - '5432:5432'
     environment:
@@ -39,7 +38,7 @@ services:
     container_name: app-nginx
     image: nginx:latest
     volumes:
-      - ${PWD:-./}/backend:/var/www
+      - ${PWD:-./}:/var/www
       - ./docker/nginx/config:/etc/nginx/conf.d
       - ./docker/nginx/logs:/var/log/nginx
     ports:

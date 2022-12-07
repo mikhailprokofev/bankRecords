@@ -4,5 +4,5 @@ controllers:
     type: attribute
 
 kernel:
-    resource: App\Kernel
+    resource: ../src/Kernel.php
     type: attribute
