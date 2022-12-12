@@ -14,6 +14,8 @@ services:
     environment:
       COMPOSER_HOME: /var/www/var/composer
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       app-postgres:
         condition: service_healthy
 
@@ -46,6 +48,16 @@ services:
       - '4434:443'
     depends_on:
       - app-php
+
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    ports: 
+      - '5672:15672'
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 3
 
 volumes:
   app-postgres-data:
