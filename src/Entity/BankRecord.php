@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\BankRecordsRepository;
+use App\Repository\BankRecordRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 use Symfony\Component\Uid\Uuid;
 
 #[
-    ORM\Entity(repositoryClass: BankRecordsRepository::class),
+    ORM\Entity(repositoryClass: BankRecordRepository::class),
     ORM\Table(name: 'bank_record')
 ]
 class BankRecord implements \JsonSerializable
@@ -19,22 +19,20 @@ class BankRecord implements \JsonSerializable
         #[
             ORM\Id,
             ORM\Column(type: 'uuid', unique: true),
-            ORM\GeneratedValue(strategy: 'CUSTOM'),
-            ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')
         ]
-        public readonly Uuid $transaction_id,
+        private readonly Uuid $transaction_id,
         #[ORM\Column(type:"string", length:75)]
-        public readonly string $client_name,
+        private readonly string $client_name,
         #[ORM\Column(type:"string", length:30)]
-        public readonly string $product_name,
+        private readonly string $product_name,
         #[ORM\Column(type:"float")]
-        public readonly float $product_price,
+        private readonly float $product_price,
         #[ORM\Column(type:"string", length:30)]
-        public readonly string $credit_card_issuer,
+        private readonly string $credit_card_issuer,
         #[ORM\Column(type:"string", length:25)]
-        public readonly string $credit_card_number,
+        private readonly string $credit_card_number,
         #[ORM\Column(type:"datetime_immutable")]
-        public readonly DateTimeImmutable $purhase_date,
+        private readonly DateTimeImmutable $purhase_date,
     )
     {}
     #[\ReturnTypeWillChange]
