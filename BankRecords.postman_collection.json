@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "b9b3f7c6-67ca-4cd0-87c4-9ea4c8c65915",
+		"name": "BankRecords",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24657262"
+	},
+	"item": [
+		{
+			"name": "Send Tiny Files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/user/Downloads/dataset-tiny.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/api/upload",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Small Files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/user/Downloads/dataset-small.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/api/upload",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Large Files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/user/Downloads/dataset-large.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/api/upload",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
