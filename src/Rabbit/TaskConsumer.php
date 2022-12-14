@@ -6,6 +6,7 @@ use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\Uid\Uuid;
+use Psr\Log\LoggerInterface;
 use App\Entity\BankRecord;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -14,26 +15,32 @@ use DateTime;
 class TaskConsumer implements ConsumerInterface 
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
+        protected readonly ManagerRegistry $registry,
+        protected LoggerInterface $logger,
     )
     {}
 
     public function execute(AMQPMessage $msg): void
     {
         $this -> manager = $this -> registry -> getManager();
+        $this -> manager->clear();
+
         $message = json_decode($msg->body, true);
 
-        if (empty($this->checkExistence($message['transaction_id']))){
-            $this->manager->persist($this->createBankRecord(array_values($message)));
-            $this->manager->flush();
-            $this->manager->clear();
-            return ;
+        foreach ($message as $row) {
+            $record = explode(',', $row, 7);
+            if (empty($this->checkExistence($record[0]))){
+                $this->manager->persist($this->createBankRecord($record));
+            } else {
+                $uid = $record[0];
+                $date = new DateTimeImmutable();
+                $date = $date->setTimezone(new DateTimeZone('Europe/Moscow'));
+                $timestamp = $date->format('Y-m-d H:i:sP');
+                $this->logger->info("$timestamp\t | Uuid = $uid is exist in DB {$row}");
+            }
         }
-        $uid = $message['transaction_id'];
-        $date = new DateTimeImmutable();
-        $date = $date->setTimezone(new DateTimeZone('Europe/Moscow'));
-        $timestamp = $date->format('Y-m-d H:i:sP');
-        return ;
+        $this->manager->flush();
+        $this->manager->clear();
     }
 
     public function createBankRecord($cells): BankRecord

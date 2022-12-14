@@ -17,10 +17,7 @@ class BankRecordsFile
     )
     {}
 
-    public function getReader(): ReaderInterface
-    {
-        $reader = ReaderEntityFactory::createCSVReader();
-        $reader->open(FILE_FOLDERS . $this->fileName);       
-        return $reader;
+    public function getFileStream(){
+        return fopen(FILE_FOLDERS . $this->fileName, 'r');
     }
 }

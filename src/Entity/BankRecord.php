@@ -36,17 +36,17 @@ class BankRecord implements \JsonSerializable
     )
     {}
     #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
-    return [
-        "transaction_id" => $this->transaction_id,
-        "client_name" => $this->client_name,
-        "product_name" => $this->product_name,
-        "product_price" => $this->product_price,
-        "credit_card_issuer" => $this->credit_card_issuer,
-        "credit_card_number" => $this->credit_card_number,
-        "purhase_date" => $this->purhase_date,
-    ];
+        return [
+            "transaction_id" => $this->transaction_id,
+            "client_name" => $this->client_name,
+            "product_name" => $this->product_name,
+            "product_price" => $this->product_price,
+            "credit_card_issuer" => $this->credit_card_issuer,
+            "credit_card_number" => $this->credit_card_number,
+            "purhase_date" => $this->purhase_date,
+        ];
     }
 }
 
