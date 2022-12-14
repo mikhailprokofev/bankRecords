@@ -35,7 +35,7 @@ class BankRecord implements \JsonSerializable
         private readonly DateTimeImmutable $purhase_date,
     )
     {}
-    #[\ReturnTypeWillChange]
+
     public function jsonSerialize(): array
     {
         return [
